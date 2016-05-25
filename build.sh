@@ -11,5 +11,5 @@ dir=$( dirname "$0" )
 }
 
 
-go-bindata -nomemcopy -pkg main -out ${dir}/bindata.go ${dir}/templates/...
+go-bindata -nomemcopy -pkg main -out ${dir}/bindata.go ${dir}/templates/index.html
 godep go build

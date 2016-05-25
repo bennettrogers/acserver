@@ -178,10 +178,7 @@ func renderListOfACIs(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	content, err := Asset("templates/index.html")
-	if err != nil {
-		fmt.Fprintf(w, fmt.Sprintf("%v", err))
-	}
+	content := templates_index_html()
 	t, err := template.New("index").Parse(string(content))
 	//t, err := template.ParseFiles(path.Join(templatedir, "index.html"))
 	if err != nil {
