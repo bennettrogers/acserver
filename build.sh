@@ -6,7 +6,7 @@ dir=$( dirname "$0" )
     go get github.com/jteeuwen/go-bindata || true
     cd ${GOPATH}/src/github.com/jteeuwen/go-bindata
     git checkout v2.0.3
-    go build
+    go install
     cd -
 }
 
