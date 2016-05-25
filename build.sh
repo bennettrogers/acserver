@@ -2,6 +2,7 @@
 set -e
 dir=$( dirname "$0" )
 
+[ -f ${GOPATH}/bin/godep ] || go get github.com/tools/godep
 [ -f ${GOPATH}/bin/go-bindata ] || {
     go get github.com/jteeuwen/go-bindata || true
     cd ${GOPATH}/src/github.com/jteeuwen/go-bindata
