@@ -30,8 +30,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/appc/acserver/Godeps/_workspace/src/github.com/gorilla/handlers"
-	"github.com/appc/acserver/Godeps/_workspace/src/github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 type aci struct {
@@ -71,17 +71,17 @@ type upload struct {
 }
 
 var (
-	directory   string
-	username    string
-	password    string
+	directory string
+	username  string
+	password  string
 
 	uploadcounter int
 	newuploadLock sync.Mutex
 	uploads       map[int]*upload
 
-	gpgpubkey = flag.String("pubkeys", "", "Path to gpg public keys images will be signed with")
-	https = flag.Bool("https", false, "Whether or not to provide https URLs for meta discovery")
-	port = flag.Int("port", 3000, "The port to run the server on")
+	gpgpubkey  = flag.String("pubkeys", "", "Path to gpg public keys images will be signed with")
+	https      = flag.Bool("https", false, "Whether or not to provide https URLs for meta discovery")
+	port       = flag.Int("port", 3000, "The port to run the server on")
 	serverName = flag.String("domain", "", "domain provided by discovery")
 )
 
@@ -178,7 +178,7 @@ func renderListOfACIs(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	content := templates_index_html()
+	content, _ := templates_index_html()
 	t, err := template.New("index").Parse(string(content))
 	//t, err := template.ParseFiles(path.Join(templatedir, "index.html"))
 	if err != nil {
@@ -413,10 +413,10 @@ func completeUpload(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !up.GotSig {
-		reportFailure(num, w, "signature wasn't uploaded", msg.Reason)
-		return
-	}
+	//if !up.GotSig {
+	//	reportFailure(num, w, "signature wasn't uploaded", msg.Reason)
+	//	return
+	//}
 
 	if !up.GotACI {
 		reportFailure(num, w, "ACI wasn't uploaded", msg.Reason)
@@ -523,10 +523,12 @@ func finishUpload(num int) error {
 		return err
 	}
 
-	err = os.Rename(path.Join(directory, "tmp", strconv.Itoa(num)+".asc"),
-		path.Join(directory, up.Image+".asc"))
-	if err != nil {
-		return err
+	if _, err := os.Stat(path.Join(directory, "tmp", strconv.Itoa(num)+".asc")); err == nil {
+		err = os.Rename(path.Join(directory, "tmp", strconv.Itoa(num)+".asc"),
+			path.Join(directory, up.Image+".asc"))
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -608,10 +610,10 @@ func listACIs() ([]aci, error) {
 		}
 		if len(tokens) > 4 {
 			diff := len(tokens) - 4
-			tokens[0] = strings.Join(tokens[0:len(tokens) - 3], "-")
-			tokens[1] = tokens[1 + diff]
-			tokens[2] = tokens[2 + diff]
-			tokens[3] = tokens[3 + diff]
+			tokens[0] = strings.Join(tokens[0:len(tokens)-3], "-")
+			tokens[1] = tokens[1+diff]
+			tokens[2] = tokens[2+diff]
+			tokens[3] = tokens[3+diff]
 		}
 
 		tokens1 := strings.Split(tokens[3], ".")

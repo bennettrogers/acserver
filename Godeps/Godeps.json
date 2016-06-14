@@ -1,8 +1,9 @@
 {
-	"ImportPath": "github.com/appc/acserver",
+	"ImportPath": "github.com/blablacar/acserver",
 	"GoVersion": "go1.5.1",
+	"GodepVersion": "v65",
 	"Packages": [
-		"./..."
+		"././..."
 	],
 	"Deps": [
 		{

@@ -12,5 +12,5 @@ dir=$( dirname "$0" )
 }
 
 
-go-bindata -nomemcopy -pkg main -out ${dir}/bindata.go ${dir}/templates/index.html
-godep go build
+go-bindata -nomemcopy -pkg main -o ${dir}/bindata.go ${dir}/templates/...
+godep go build --ldflags '-s -w -extldflags "-static"'
