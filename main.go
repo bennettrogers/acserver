@@ -178,8 +178,7 @@ func renderListOfACIs(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	content, _ := templates_index_html()
-	t, err := template.New("index").Parse(string(content))
+    t, err := template.ParseFiles(path.Join("templates/index.html"))
 	//t, err := template.ParseFiles(path.Join(templatedir, "index.html"))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
